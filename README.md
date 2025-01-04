@@ -95,7 +95,7 @@ The following fields are shown in these examples:
 
 These devices can be identified as Linux using TCP options, TTL < 64, and window size that is usually a function of MSS (note specific MSS/window size pairs).
 
-The requests can all be identified as embedded linux using windows scale. For many of the versions of linux seen on these types of devices, when memory is low (~<2GB) then window scale is based indirectly on memory size. All of the above requests appear to originate from embedded linux devices such as routers, modems, IoT devices, etc. In most environments it would be acceptable to simply block or otherwise considering as fradulent any linux traffic with window scale <= 5.
+The requests can all be identified as embedded linux using windows scale. For many of the versions of linux seen on these types of devices, when memory is low (~<2GB) then window scale is based indirectly on memory size. All of the above requests appear to originate from embedded linux devices such as routers, modems, IoT devices, etc. In most environments it would be acceptable to simply block or otherwise considering as fradulent any traffic matching specific TCP fingerprints.
 
 The RTTs observed are extremely high--this is likely an artifact of limited processor power/slow scanning software rather than signal propogation delay.
 
