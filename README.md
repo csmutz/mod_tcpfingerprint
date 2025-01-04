@@ -62,7 +62,7 @@ Timestamp
 
 TCP Fingerprinting is useful for many applications, here we show two simple examples using common botnet propagation patterns collected by observing natural internet scanning from a single IP. 
 
-These examples are the simplest, noisiest examples. However, this type of analysis isn't limited to detecting mere internet scanning noise, many residential proxy botnets can be detected using similar hueristics. More advanced detections are possible. 
+For ease of replication, these examples are the of the simplest, noisiest, and least sophisticated threats. However, this type of analysis isn't limited to detecting mere internet scanning noise, many residential proxy botnets can be detected using similar hueristics. More advanced detections and use cases exist. 
 
 We show that it's easy and efficient to collect this information at the request level. Cloud providers--please give us the option to get this sort of information for our tenants!
 
