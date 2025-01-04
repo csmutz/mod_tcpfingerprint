@@ -1,6 +1,6 @@
 # mod_tcpfingerprint
 
-A module that retrieves connection tcp fingerprinting data from the Linux kernel (SAVED_SYN and TCP_INFO) and makes it available for logging and environment variables for scripts. Since SAVE_SYN is Linux specific, this is Linux only.
+A module that retrieves tcp fingerprinting data from the Linux kernel (SAVED_SYN and TCP_INFO) and makes it available for logging and environment variables for scripts. Since SAVE_SYN is Linux specific, this is Linux only.
 
 This module will instruct the kernel to SAVE_SYN on all apache Listen sockets (all incoming connections). In some cases the kernel does not preserve SYN packets--ex. if a SYN flood causes SYN cookies to be used. 
 
