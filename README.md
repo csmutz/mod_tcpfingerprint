@@ -97,7 +97,7 @@ These devices can be identified as Linux using TCP options, TTL < 64, and window
 
 The requests can all be identified as embedded linux using windows scale. For many of the versions of linux seen on these types of devices, when memory is low (~<2GB) then window scale is based indirectly on memory size. All of the above requests appear to originate from embedded linux devices such as routers, modems, IoT devices, etc. In most environments it would be acceptable to simply block or otherwise considering as fradulent any traffic matching specific TCP fingerprints.
 
-The RTTs observed are extremely high--this is likely an artifact of limited processor power/slow scanning software rather than signal propogation delay.
+The RTTs observed are extreme outliers. This excessive latency is likely an artifact of limited processor power/asynchronous scanning software rather than signal propogation delay or packet loss due to unreliable networks.
 
 ## Potential Future Work
 
