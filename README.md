@@ -60,7 +60,7 @@ Timestamp
 
 ## Motivation/Examples
 
-TCP Fingerprinting is useful for many applications, here we show two simple examples using common botnet propagation patterns collected by observing natural internet scanning from a single IP. 
+TCP Fingerprinting is useful for many applications, here we show example data matching two common botnet propagation patterns collected by observing natural internet scanning from a single IP. 
 
 For ease of replication, these examples are the of the simplest, noisiest, and least sophisticated threats. However, this type of analysis isn't limited to detecting mere internet scanning noise, many residential proxy botnets can be detected using similar hueristics. More advanced detections and use cases exist. 
 
