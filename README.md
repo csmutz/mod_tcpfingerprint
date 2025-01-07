@@ -1,8 +1,8 @@
 # mod_tcpfingerprint
 
-A module that retrieves tcp fingerprinting data from the Linux kernel (SAVED_SYN and TCP_INFO) and makes it available for logging and environment variables for scripts. Since SAVE_SYN is Linux specific, this is Linux only.
+A module that retrieves tcp fingerprinting data from the Linux kernel (SAVED_SYN and TCP_INFO) and makes it available for logging and environment variables for scripts. Since SAVED_SYN is Linux specific, this is Linux only.
 
-This module will instruct the kernel to SAVE_SYN on all apache Listen sockets (all incoming connections). In some cases the kernel does not preserve SYN packets--ex. if a SYN flood causes SYN cookies to be used. 
+Currently, this module exposes the attributes useful for TCP fingerprinting. Future work includes integrating a reliable fingerprint database (when it exists) and blocking connections based on fingerprints.
 
 ## Installation/Usage
 
@@ -31,6 +31,8 @@ Directory Directives (request level):
   - TCPFingerprintEnvVars: Enable creation of CGI environment variables, default off (similar to StdEnvVars of for modssl)
   - TCPFingerprintEnvTCPInfo: Enable dump of raw TCP_INFO in environment variables, default off
   - TCPFingerprintEnvSavedSYN: Enable dump of raw SAVED_SYN in environment variables, default off
+
+This module will instruct the kernel to SAVE_SYN on all apache Listen sockets (all incoming connections). In some cases the kernel does not preserve SYN packets--ex. if a SYN flood causes SYN cookies to be used. 
 
 ## Attributes
 
