@@ -137,7 +137,10 @@ Configuration directive to configure SAVE_SYN on a per Listen basis. RFC on what
    - ~~Try implementing collection of timestamp at ap_hook_create_connection hook~~--see if timestamp is actually end of TCP handshake
      - This is called if done before core
        - Check timestamp, make sure this actually reflects handshake RTT (vs. payload)--it doesn't, this doesn't work--it's comparable to the pre_connection hook--need to find an earlier hook?
-   - Potentially override accept_function in ap_listen_rec?
+   - get accept timestamp in the following way:
+       - Add APR_POLLOUT event to listen socket
+       - Get timestamp during ap_hook_create_connection
+       - Remove APR_POLLOUT event on new connections
  - Configurations
    - Per Listener
      - **(Too complicated, not sure what's really wanted)** Configure which listeners should have SAVE_SYN set
