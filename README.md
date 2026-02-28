@@ -140,6 +140,7 @@ Configuration directive to configure SAVE_SYN on a per Listen basis. RFC on what
    - get accept timestamp in the following way:
        - Get timestamp during ap_hook_create_connection
        - Check if APR_TCP_DEFER_ACCEPT impacts ability to get accurate accept timestamp
+         - Try AcceptFilter directive, connect or none? 
        - Check if APR_POLLOUT option impacts ability to get accurate accept timestamp
  - Configurations
    - Per Listener
